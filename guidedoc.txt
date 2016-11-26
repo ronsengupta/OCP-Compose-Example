@@ -1,0 +1,43 @@
+$ kubectl create -f local-pv.yml 
+persistentvolume "pv0001" created
+
+
+$ kompose --opencompose services.yml up                              
+We are going to create Kubernetes Deployments, Services and PersistentVolumeClaims for your Dockerized application. 
+If you need different kind of resources, use the 'kompose convert' and 'kubectl create -f' commands instead. 
+
+INFO[0000] Successfully created service: frontend       
+INFO[0000] Successfully created service: backend        
+INFO[0000] Successfully created service: mongodb        
+INFO[0000] Successfully created persistentVolumeClaim: db-store 
+INFO[0000] Successfully created deployment: frontend    
+INFO[0000] Successfully created deployment: backend     
+INFO[0000] Successfully created deployment: mongodb     
+
+Your application has been deployed to Kubernetes. You can run 'kubectl get deployment,svc,pods,pvc' for details.
+
+
+
+ $ kubectl get deployments
+NAME       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+backend    1         1         1            1           2m
+frontend   1         1         1            1           2m
+mongodb    1         1         1            1           2m
+
+
+
+$ kubectl get svc
+NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)     AGE
+backend      10.0.0.247   <none>        3000/TCP    2m
+frontend     10.0.0.217   <pending>     8080/TCP    2m
+kubernetes   10.0.0.1     <none>        443/TCP     15d
+mongodb      10.0.0.166   <none>        27017/TCP   2m
+
+$ kubectl get pods -o wide
+NAME                        READY     STATUS    RESTARTS   AGE       IP           NODE
+backend-1215184120-hfji7    1/1       Running   0          3m        172.17.0.4   minikube
+frontend-2479999252-tpzff   1/1       Running   0          3m        172.17.0.5   minikube
+mongodb-254926443-c1rba     1/1       Running   0          3m        172.17.0.3   minikube
+
+
+Link: http://developers.redhat.com/blog/2016/11/03/container-orchestration-specification-for-better-devops/
